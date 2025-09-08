@@ -28,9 +28,9 @@ export default class HotelDatepicker {
         this.selectForward = opts.selectForward || false
         this.disabledDates = opts.disabledDates || []
         this.bookedDays = opts.bookedDays || []
+        this.seasonDetails = opts.seasonDetails || []
         this.arrivalDays = opts.arrivalDays || []
         this.departureDays = opts.departureDays || []
-        this.seasonDetails = opts.seasonDetails || []
         this.noCheckInDates = opts.noCheckInDates || []
         this.noCheckOutDates = opts.noCheckOutDates || []
         this.disabledDaysOfWeek = opts.disabledDaysOfWeek || []
@@ -47,6 +47,7 @@ export default class HotelDatepicker {
         this.topbarPosition = opts.topbarPosition === "bottom" ? "bottom" : "top"
         this.moveBothMonths = opts.moveBothMonths || true
         this.showSelectedInfo = opts.showSelectedInfo || false
+        this.bookingView = opts.bookingView || false
         this.inline = opts.inline || false
         this.clearButton = opts.clearButton || false
         this.submitButton = Boolean(this.inline && opts.submitButton)
@@ -504,6 +505,10 @@ export default class HotelDatepicker {
 
         if (this.submitButton) {
             wrapperClass += ` ${this.className}--topbar-has-submit-button`
+        }
+
+        if (this.bookingView) {
+            wrapperClass += ` ${this.className}--booking-view`;
         }
 
         const wrapperStyle = this.inline ? "" : ' style="display:none"';

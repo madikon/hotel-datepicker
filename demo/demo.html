@@ -14,10 +14,18 @@
     <body>
         <div class="page">
             <div class="demo">
-                <h3>Demo</h3>
+                <h3>Demo 1</h3>
+                <p>Demo with booked, arrival and departure days and season details.</p>
                 <div class="demo__item">
                     <div class="demo__input" id="demo1-input-parent">
                         <input type="text" id="demo1-input" value="" aria-label="Check-in and check-out dates" aria-describedby="demo1-input-description"/>
+                    </div>
+                </div>
+                <h3>Demo 2</h3>
+                <p>Default Datepicker</p>
+                <div class="demo__item">
+                    <div class="demo__input" id="demo2-input-parent">
+                        <input type="text" id="demo2-input" value="" aria-label="Check-in and check-out dates" aria-describedby="demo2-input-description"/>
                     </div>
                 </div>
             </div>
@@ -49,6 +57,7 @@
                     showTopbar: true,
                     topbarPosition: "bottom",
                     moveBothMonths: true,
+                    bookingView: true,
                     animationSpeed: ".1s",
                     enableCheckout: false,
                     disabledDates: convertDates(disabledDates),
@@ -56,6 +65,19 @@
                     seasonDetails: seasonDetails,
                     arrivalDays: convertDates(arrivalDays),
                     departureDays: convertDates(departureDays)
+                });
+
+                // ------------------- DEMO 2 ------------------- //
+                var demo2 = new HotelDatepicker(document.getElementById("demo2-input"), {
+                    format: "DD.MM.YYYY",
+                    ariaDayFormat: "DD.MM.YYYY",
+                    startOfWeek: "monday",
+                    selectForward: true,
+                    showTopbar: true,
+                    topbarPosition: "bottom",
+                    moveBothMonths: true,
+                    animationSpeed: ".1s",
+                    enableCheckout: false
                 });
             })();
         </script>

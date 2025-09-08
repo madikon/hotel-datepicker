@@ -62,11 +62,10 @@
     @include transition;
     color: $text__light__color;
     padding: 9px 7px;
-    border: 1px solid transparent;
+    border: 1px solid #fff;
 
     &:focus {
         outline: none;
-        // border-color: $accent__color;
         background-color: $focus__bg__color;
     }
 }
@@ -110,16 +109,22 @@
 }
 
 .#{$selector}__month-day--valid {
-    background-color: $dates__valid__background__color;
+    background: #fff;
     cursor: pointer;
+
+    .#{$selector}--booking-view & {
+        background: $dates__valid__background__color;
+    }
 }
 
-.#{$selector}__month-day--arrival-day {
-    background: $dates__arrival__background__color;
-}
+.#{$selector}--booking-view {
+    .#{$selector}__month-day--arrival-day {
+        background: $dates__arrival__background__color;
+    }
 
-.#{$selector}__month-day--departure-day {
-    background: $dates__departure__background__color
+    .#{$selector}__month-day--departure-day {
+        background: $dates__departure__background__color
+    }
 }
 
 .#{$selector}__month-day--invalid,
@@ -144,8 +149,8 @@
 }
 
 .#{$selector}__month-day--selected {
-    background: rgba($accent__color, 0.3);
-    color: #fff;
+    background: rgba($accent__color, 0.3) !important;
+    color: #fff !important;
 
     &:after,
     &:before {
@@ -154,8 +159,8 @@
 }
 
 .#{$selector}__month-day--hovering {
-    background: rgba($accent__color, 0.3);
-    color: #fff;
+    background: rgba($accent__color, 0.3) !important;
+    color: #fff !important;
 }
 
 .#{$selector}__month-day--today {
@@ -165,8 +170,8 @@
 
 .#{$selector}__month-day--first-day-selected,
 .#{$selector}__month-day--last-day-selected {
-    background: $accent__color;
-    color: $background__color;
+    background: $accent__color !important;
+    color: $background__color !important;
 }
 
 .#{$selector}__month-day--last-day-selected:after {
