@@ -109,36 +109,42 @@
     content: none;
 }
 
-.#{$selector}__month-day--invalid {
+.#{$selector}__month-day--valid {
+    background-color: $dates__valid__background__color;
+    cursor: pointer;
+}
+
+.#{$selector}__month-day--arrival-day {
+    background: $dates__arrival__background__color;
+}
+
+.#{$selector}__month-day--departure-day {
+    background: $dates__departure__background__color
+}
+
+.#{$selector}__month-day--invalid,
+.#{$selector}__month-day--disabled {
+    background: #ffffff;
     color: $dates__invalid__color;
 }
 
-.#{$selector}__month-day--disabled {
-    color: $dates__disabled__color;
-    position: relative;
+.#{$selector}__month-day--min-nights-invalid {
+    background-color: rgba($accent__color, 0.2);;
+}
 
-    &:after {
-        content: "\00d7";
-        left: 50%;
-        position: absolute;
-        color: $dates__disabled__cross__color;
-        font-size: 16px;
-        top: 50%;
-        transform: translate(-50%, -50%);
-    }
+.#{$selector}__month-day--booked {
+    color: $dates__booked__color;
+    background: $dates__booked__background__color;
 }
 
 .#{$selector}__month-day--no-checkin,
 .#{$selector}__month-day--no-checkout,
 .#{$selector}__month-day--day-of-week-disabled {
-    background-color: rgba($dates__invalid__color, 0.5);
-}
-
-.#{$selector}__month-day--checkout-enabled {
+    background: rgba($dates__invalid__color, 0.5);
 }
 
 .#{$selector}__month-day--selected {
-    background-color: rgba($accent__color, 0.2);
+    background: rgba($accent__color, 0.3);
     color: #fff;
 
     &:after,
@@ -148,18 +154,18 @@
 }
 
 .#{$selector}__month-day--hovering {
-    background-color: rgba($accent__color, 0.3);
+    background: rgba($accent__color, 0.3);
     color: #fff;
 }
 
 .#{$selector}__month-day--today {
-    background-color: $text__base__color;
+    background: $text__base__color;
     color: #fff;
 }
 
 .#{$selector}__month-day--first-day-selected,
 .#{$selector}__month-day--last-day-selected {
-    background-color: $accent__color;
+    background: $accent__color;
     color: $background__color;
 }
 
