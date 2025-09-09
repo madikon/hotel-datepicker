@@ -116,9 +116,9 @@
   padding: 9px 7px;
   border: 1px solid #fff;
 }
-.datepicker__month-day:focus {
-  outline: none;
-  background-color: #ffe684;
+.datepicker__month-day:focus-visible {
+  outline: #3858e9 solid 2px !important;
+  outline-offset: -2px;
 }
 
 .datepicker__month-day--no-checkin {
@@ -177,7 +177,7 @@
 
 .datepicker__month-day--no-checkin.datepicker__month-day--no-checkout,
 .datepicker__month-day--day-of-week-disabled {
-  background: rgba(200, 201, 208, 0.1) !important;
+  background: #fff;
   color: #c8c9d0;
   cursor: not-allowed;
 }
@@ -188,7 +188,7 @@
 
 .datepicker__month-day--min-nights-invalid {
   background-color: rgba(56, 88, 233, 0.3) !important;
-  color: #333;
+  color: #fff !important;
 }
 
 .datepicker__month-day--booked {

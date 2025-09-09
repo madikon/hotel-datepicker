@@ -2080,14 +2080,14 @@ class HotelDatepicker {
           nextIndex = currentIndex + (7 - currentWeekdayIndex);
           break;
       }
-      const nextDay = this.datepicker.querySelectorAll(`[index="'${nextIndex}"]`);
+      const nextDay = this.datepicker.querySelectorAll(`[index="${nextIndex}"]`);
       if (nextDay.length > 0 && nextIndex > 0) {
         this.setDayFocus(nextDay[0]);
       } else if (nextIndex > 0) {
         let nextDay = "";
         const gone = this.goToNextMonth(2, true);
         if (gone) {
-          const month = this.datepicker.getElementsByClassName(this.className + "__month--month2");
+          const month = this.datepicker.getElementsByClassName(`${this.className}__month--month2`);
           if (month.length > 0) {
             if ($direction === "down") {
               nextDay = month[0].querySelectorAll(`.${this.className}__month-day--visibleMonth[d="${currentWeekdayIndex}"]`);

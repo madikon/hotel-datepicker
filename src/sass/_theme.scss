@@ -64,9 +64,9 @@
     padding: 9px 7px;
     border: 1px solid #fff;
 
-    &:focus {
-        outline: none;
-        background-color: $focus__bg__color;
+    &:focus-visible {
+        outline: $accent__color solid 2px !important;
+        outline-offset: -2px;
     }
 }
 
@@ -132,7 +132,7 @@
 
 .#{$selector}__month-day--no-checkin.#{$selector}__month-day--no-checkout,
 .#{$selector}__month-day--day-of-week-disabled {
-    background: rgba($dates__invalid__color, 0.1) !important;
+    background: #fff;
     color: $dates__invalid__color;
     cursor: not-allowed;
 
@@ -142,7 +142,8 @@
 }
 
 .#{$selector}__month-day--min-nights-invalid {
-    background-color: rgba($accent__color, 0.3) !important;    color: $text__light__color;
+    background-color: rgba($accent__color, 0.3) !important;
+    color: #fff !important;
 }
 
 .#{$selector}__month-day--booked {

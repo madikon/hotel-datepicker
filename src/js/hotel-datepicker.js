@@ -2592,7 +2592,7 @@ export default class HotelDatepicker {
             }
 
             const nextDay = this.datepicker.querySelectorAll(
-                `[index="'${nextIndex}"]`
+                `[index="${nextIndex}"]`
             )
             if (nextDay.length > 0 && nextIndex > 0) {
                 this.setDayFocus(nextDay[0])
@@ -2600,9 +2600,7 @@ export default class HotelDatepicker {
                 let nextDay = ""
                 const gone = this.goToNextMonth(2, true)
                 if (gone) {
-                    const month = this.datepicker.getElementsByClassName(
-                        this.className + "__month--month2"
-                    )
+                    const month = this.datepicker.getElementsByClassName(`${this.className}__month--month2`)
 
                     if (month.length > 0) {
                         if ($direction === "down") {
