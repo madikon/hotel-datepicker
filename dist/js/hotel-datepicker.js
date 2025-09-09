@@ -547,6 +547,11 @@ var HotelDatepicker = (function (fecha) {
         // Show month table and create the necessary HTML code
         const name = this.getMonthName(date.getMonth());
         const monthDom = this.getMonthDom(month);
+
+        // there is no month Dom when used in a closed magnific popup
+        if (!monthDom) {
+          return;
+        }
         const monthName = monthDom.getElementsByClassName(`${this.className}__month-name`)[0];
         const monthBody = monthDom.getElementsByTagName("tbody")[0];
 
