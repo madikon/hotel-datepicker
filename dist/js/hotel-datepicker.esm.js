@@ -1200,7 +1200,7 @@ class HotelDatepicker {
           if (nightsBeforeSelectedDay > 1 && nightsBeforeSelectedDay < parseInt(season.no_gap, 10) + 1) {
             this.start = false;
             this.end = false;
-            this.topBarInfoText(this.replacei18n(this.lang('info-no-gap'), minStay));
+            this.topBarInfoText(this.replacei18n(this.lang('info-no-gap'), season.no_gap));
             return;
           }
           if (nextBooked) {
@@ -2050,7 +2050,7 @@ class HotelDatepicker {
   }
   setActiveDay($direction) {
     const activeEl = document.activeElement;
-    if (activeEl && this.hasClass(activeEl, this.className + "__month-day--visibleMonth") && this.datepicker.contains(activeEl)) {
+    if (activeEl && this.hasClass(activeEl, `${this.className}__month-day--visibleMonth`) && this.datepicker.contains(activeEl)) {
       const currentIndex = parseInt(activeEl.getAttribute("index"), 10);
       const currentWeekdayIndex = parseInt(activeEl.getAttribute("d"), 10);
       let nextIndex = -1;
