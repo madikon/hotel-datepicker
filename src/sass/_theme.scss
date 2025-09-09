@@ -104,10 +104,6 @@
     }
 }
 
-.#{$selector}__month-day--no-checkin.#{$selector}__month-day--no-checkout:before {
-    content: none;
-}
-
 .#{$selector}__month-day--valid {
     background: #fff;
     cursor: pointer;
@@ -118,11 +114,11 @@
 }
 
 .#{$selector}--booking-view {
-    .#{$selector}__month-day--arrival-day {
+    .#{$selector}__month-day--arrival-day:not(.#{$selector}__month-day--invalid) {
         background: $dates__arrival__background__color;
     }
 
-    .#{$selector}__month-day--departure-day {
+    .#{$selector}__month-day--departure-day:not(.#{$selector}__month-day--invalid) {
         background: $dates__departure__background__color
     }
 }
@@ -131,21 +127,27 @@
 .#{$selector}__month-day--disabled {
     background: #ffffff;
     color: $dates__invalid__color;
+    cursor: not-allowed;
+}
+
+.#{$selector}__month-day--no-checkin.#{$selector}__month-day--no-checkout,
+.#{$selector}__month-day--day-of-week-disabled {
+    background: rgba($dates__invalid__color, 0.1) !important;
+    color: $dates__invalid__color;
+    cursor: not-allowed;
+
+    &::before {
+        content: none;
+    }
 }
 
 .#{$selector}__month-day--min-nights-invalid {
-    background-color: rgba($accent__color, 0.2);;
+    background-color: rgba($accent__color, 0.3) !important;    color: $text__light__color;
 }
 
 .#{$selector}__month-day--booked {
     color: $dates__booked__color;
     background: $dates__booked__background__color;
-}
-
-.#{$selector}__month-day--no-checkin,
-.#{$selector}__month-day--no-checkout,
-.#{$selector}__month-day--day-of-week-disabled {
-    background: rgba($dates__invalid__color, 0.5);
 }
 
 .#{$selector}__month-day--selected {

@@ -153,10 +153,6 @@
   border-left: 8px solid transparent;
 }
 
-.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout:before {
-  content: none;
-}
-
 .datepicker__month-day--valid {
   background: #fff;
   cursor: pointer;
@@ -165,32 +161,39 @@
   background: #dcf2dd;
 }
 
-.datepicker--booking-view .datepicker__month-day--arrival-day {
+.datepicker--booking-view .datepicker__month-day--arrival-day:not(.datepicker__month-day--invalid) {
   background: linear-gradient(135deg, #dcf2dd 50%, #f9dcd8 50%);
 }
-.datepicker--booking-view .datepicker__month-day--departure-day {
+.datepicker--booking-view .datepicker__month-day--departure-day:not(.datepicker__month-day--invalid) {
   background: linear-gradient(135deg, #f9dcd8 50%, #dcf2dd 50%);
 }
 
 .datepicker__month-day--invalid,
 .datepicker__month-day--disabled {
   background: #ffffff;
-  color: #e8ebf4;
+  color: #c8c9d0;
+  cursor: not-allowed;
+}
+
+.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout,
+.datepicker__month-day--day-of-week-disabled {
+  background: rgba(200, 201, 208, 0.1) !important;
+  color: #c8c9d0;
+  cursor: not-allowed;
+}
+.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout::before,
+.datepicker__month-day--day-of-week-disabled::before {
+  content: none;
 }
 
 .datepicker__month-day--min-nights-invalid {
-  background-color: rgba(56, 88, 233, 0.2);
+  background-color: rgba(56, 88, 233, 0.3) !important;
+  color: #333;
 }
 
 .datepicker__month-day--booked {
   color: red;
   background: #f9dcd8;
-}
-
-.datepicker__month-day--no-checkin,
-.datepicker__month-day--no-checkout,
-.datepicker__month-day--day-of-week-disabled {
-  background: rgba(232, 235, 244, 0.5);
 }
 
 .datepicker__month-day--selected {

@@ -320,7 +320,12 @@ export default class HotelDatepicker {
 
         // Parse disabled dates
         if (this.disabledDates.length > 0) {
-            this.parseDisabledDates()
+            this.disabledDatesTime = this.parseDisabledDates()
+        }
+
+        // Parse booked dates
+        if (this.bookedDays.length > 0) {
+            this.bookedDateTimes = this.parseDisabledDates()
         }
 
         // Parse disabled days
@@ -1447,11 +1452,11 @@ export default class HotelDatepicker {
                 let prevBooked = null
                 let nextBooked = null
 
-                if (this.disabledDatesTime) {
-                    prevBooked = this.disabledDatesTime
+                if (this.bookedDays) {
+                    prevBooked = this.bookedDateTimes
                         .filter(d => d < this.start)
                         .sort((a, b) => b - a)[0]
-                    nextBooked = this.disabledDatesTime
+                    nextBooked = this.bookedDateTimes
                             .filter(d => d > this.start)
                             .sort((a, b) => a - b)[0]
                 }
@@ -2179,7 +2184,7 @@ export default class HotelDatepicker {
             return a - b
         })
 
-        this.disabledDatesTime = _tmp
+        return _tmp;
     }
 
     getClosestDisabledDates(x) {

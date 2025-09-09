@@ -275,7 +275,12 @@ var HotelDatepicker = (function (fecha) {
 
         // Parse disabled dates
         if (this.disabledDates.length > 0) {
-          this.parseDisabledDates();
+          this.disabledDatesTime = this.parseDisabledDates();
+        }
+
+        // Parse booked dates
+        if (this.bookedDays.length > 0) {
+          this.bookedDateTimes = this.parseDisabledDates();
         }
 
         // Parse disabled days
@@ -1202,9 +1207,9 @@ var HotelDatepicker = (function (fecha) {
             let minStay = parseInt(season.min_stay, 10) || 1;
             let prevBooked = null;
             let nextBooked = null;
-            if (this.disabledDatesTime) {
-              prevBooked = this.disabledDatesTime.filter(d => d < this.start).sort((a, b) => b - a)[0];
-              nextBooked = this.disabledDatesTime.filter(d => d > this.start).sort((a, b) => a - b)[0];
+            if (this.bookedDays) {
+              prevBooked = this.bookedDateTimes.filter(d => d < this.start).sort((a, b) => b - a)[0];
+              nextBooked = this.bookedDateTimes.filter(d => d > this.start).sort((a, b) => a - b)[0];
             }
 
             // if booked before the selected start date
@@ -1798,7 +1803,7 @@ var HotelDatepicker = (function (fecha) {
         _tmp.sort((a, b) => {
           return a - b;
         });
-        this.disabledDatesTime = _tmp;
+        return _tmp;
       }
       getClosestDisabledDates(x) {
         // This method implements part of the work done by the user Zeta
