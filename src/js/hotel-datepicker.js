@@ -535,8 +535,8 @@ export default class HotelDatepicker {
                         <strong class="${this.className}__info-text ${this.className}__info-text--end-day">...</strong>
                         <em class="${this.className}__info-text ${this.className}__info-text--selected-days">(<span></span>)</em>
                     </div>
-                    <div class="${this.className}__info ${this.className}__info--custom"></div>
                     <div class="${this.className}__info ${this.className}__info--feedback"></div>
+                    <div class="${this.className}__info ${this.className}__info--custom"></div>
             `;
 
             let buttonsHtml = "";
