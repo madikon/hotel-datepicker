@@ -307,6 +307,8 @@ export default class HotelDatepicker {
         // Create the DOM elements
         this.createDom();
 
+        this.customContentContainer = this.getCustomContentContainer();
+
         // Set default time
         let defaultTime = new Date();
 
@@ -1916,6 +1918,30 @@ export default class HotelDatepicker {
         bar.textContent = text;
         this.addClass(bar, `${this.className}__info--error`);
         this.removeClass(bar, `${this.className}__info--help`);
+    }
+
+    getCustomContentContainer() {
+        if (!this.showTopbar) {
+            return null;
+        }
+
+        if (this.customContentContainer) {
+            return this.customContentContainer;
+        }
+
+        return this.datepicker.getElementsByClassName(`${this.className}__info--custom`)[0];
+    }
+
+    topBarCustomContent(content) {
+        if (!this.showTopbar) {
+            return;
+        }
+
+        const container = this.getCustomContentContainer();
+
+        if (container) {
+            container.innerHTML = content;
+        }
     }
 
     topBarErrorText(bar, errorText, errorValue) {
