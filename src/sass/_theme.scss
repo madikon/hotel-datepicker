@@ -64,6 +64,11 @@
     padding: 9px 7px;
     border: 1px solid #fff;
 
+    &:hover:not(.#{$selector}__month-day--booked):not(.#{$selector}__month-day--invalid) {
+        background: $accent__color !important;
+        color: #fff !important;
+    }
+
     &:focus-visible {
         outline: $accent__color solid 2px !important;
         outline-offset: -2px;
@@ -130,7 +135,7 @@
     cursor: not-allowed;
 }
 
-.#{$selector}__month-day--no-checkin.#{$selector}__month-day--no-checkout,
+.#{$selector}__month-day--no-checkin.#{$selector}__month-day--no-checkout:not(.#{$selector}__month-day--booked),
 .#{$selector}__month-day--day-of-week-disabled {
     background: #fff;
     color: $dates__invalid__color;
@@ -167,8 +172,7 @@
 }
 
 .#{$selector}__month-day--today {
-    background: $text__base__color;
-    color: #fff;
+    font-weight: bold;
 }
 
 .#{$selector}__month-day--first-day-selected,

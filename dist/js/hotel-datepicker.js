@@ -1221,9 +1221,33 @@ var HotelDatepicker = (function (fecha) {
             // if booked before the selected start date
             if (prevBooked) {
               const nightsBeforeSelectedDay = this.countDays(this.start, prevBooked) - 1;
+              let noGapDays = parseInt(season.no_gap, 10);
 
               // dont allow gaps smaller than no_gap
-              if (nightsBeforeSelectedDay > 1 && nightsBeforeSelectedDay < parseInt(season.no_gap, 10) + 1) {
+              if (nightsBeforeSelectedDay > 1 && nightsBeforeSelectedDay < noGapDays + 1) {
+                // and disable affected days
+                // after a user hast clicked on a wrong date
+                const timeOfFirstDisabledDay = prevBooked.getTime() + 86400000 * 2;
+                const days = this.datepicker.getElementsByTagName("td");
+                let notBookableDaysIndex = null;
+                for (let i = 0; i < days.length; i++) {
+                  const time = parseInt(days[i].getAttribute("time"), 10);
+                  if (time === timeOfFirstDisabledDay) {
+                    notBookableDaysIndex = i;
+                    break;
+                  }
+                }
+                if (notBookableDaysIndex !== null) {
+                  while (days[notBookableDaysIndex] && noGapDays > 1) {
+                    if (days[notBookableDaysIndex].getAttribute('daytype') === "visibleMonth") {
+                      this.addClass(days[notBookableDaysIndex], `${this.className}__month-day--disabled`);
+                      this.removeClass(days[notBookableDaysIndex], `${this.className}__month-day--valid`);
+                      days[notBookableDaysIndex].setAttribute("aria-disabled", "true");
+                      noGapDays--;
+                    }
+                    notBookableDaysIndex++;
+                  }
+                }
                 this.start = false;
                 this.end = false;
                 this.topBarInfoText(this.replacei18n(this.lang('info-no-gap'), season.no_gap));
@@ -1306,6 +1330,14 @@ var HotelDatepicker = (function (fecha) {
       isValidDate(time) {
         // Check if the date is valid
         time = parseInt(time, 10);
+        const now = new Date();
+        const selectedDate = new Date(time);
+        const isToday = this.getDateString(selectedDate, "YYYY-MM-DD") === this.getDateString(now, "YYYY-MM-DD");
+
+        // dont allow same day booking after 3pm
+        if (isToday && now.getHours() >= 15) {
+          return false;
+        }
         if (this.startDate && this.compareDay(time, this.startDate) < 0 || this.endDate && this.compareDay(time, this.endDate) > 0) {
           return false;
         }

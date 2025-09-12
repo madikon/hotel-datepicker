@@ -116,6 +116,10 @@
   padding: 9px 7px;
   border: 1px solid #fff;
 }
+.datepicker__month-day:hover:not(.datepicker__month-day--booked):not(.datepicker__month-day--invalid) {
+  background: #3858e9 !important;
+  color: #fff !important;
+}
 .datepicker__month-day:focus-visible {
   outline: #3858e9 solid 2px !important;
   outline-offset: -2px;
@@ -175,13 +179,13 @@
   cursor: not-allowed;
 }
 
-.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout,
+.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout:not(.datepicker__month-day--booked),
 .datepicker__month-day--day-of-week-disabled {
   background: #fff;
   color: #c8c9d0;
   cursor: not-allowed;
 }
-.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout::before,
+.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout:not(.datepicker__month-day--booked)::before,
 .datepicker__month-day--day-of-week-disabled::before {
   content: none;
 }
@@ -210,8 +214,7 @@
 }
 
 .datepicker__month-day--today {
-  background: #000;
-  color: #fff;
+  font-weight: bold;
 }
 
 .datepicker__month-day--first-day-selected,
