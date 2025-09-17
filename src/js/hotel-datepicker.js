@@ -141,6 +141,9 @@ export default class HotelDatepicker {
         this.onOpenDatepicker = opts.onOpenDatepicker === undefined ? false : opts.onOpenDatepicker;
         this.onSelectRange = opts.onSelectRange === undefined ? false : opts.onSelectRange;
         this.extraDayText = opts.extraDayText === undefined ? false : opts.extraDayText;
+        this.disabledDatesTime = [];
+        this.notSelectableDays = [];
+        this.noCheckInDateTimes = [];
 
         // DOM input
         this.input = input;
@@ -322,13 +325,14 @@ export default class HotelDatepicker {
 
         // Parse disabled dates
         if (this.disabledDates.length > 0) {
-            this.disabledDatesTime = this.parseDisabledDates();
+            this.disabledDatesTime = this.parseDates(this.disabledDates);
         }
 
-        // Parse booked dates
-        if (this.bookedDays.length > 0) {
-            this.bookedDateTimes = this.parseDisabledDates();
+        if (this.noCheckInDates.length > 0) {
+             this.noCheckInDateTimes = this.parseDates(this.noCheckInDates);
         }
+
+        this.notSelectableDays = this.disabledDatesTime.concat(this.noCheckInDateTimes);
 
         // Parse disabled days
         if (this.disabledDaysOfWeek.length > 0) {
@@ -945,6 +949,7 @@ export default class HotelDatepicker {
         let isNoCheckOut = false;
         let isDayOfWeekDisabled = false;
         let isFirstEnabledDate = false;
+        let isNoGapDay = false;
 
         // Day between disabled dates and the last day
         // before the disabled date
@@ -1050,6 +1055,32 @@ export default class HotelDatepicker {
                 }
             }
 
+            if (_day.valid && this.seasonDetails.length > 0) {
+                let season = this.getSeasonForDate(_day.date);
+                const prevBooked = this.notSelectableDays
+                        .filter(d => d < _day.time)
+                        .sort((a, b) => b - a)[0];
+
+                if (prevBooked) {
+                    const nightsBeforeDay = this.countDays(_day.date, prevBooked) - 1;
+                    const prevBookedSeason = this.getSeasonForDate(prevBooked);
+
+                    if (prevBookedSeason.begin !== season.begin) {
+                        season = prevBookedSeason;
+                    }
+
+                    let noGap = parseInt(season.no_gap, 10);
+                    if (noGap > 0) {
+                        if (nightsBeforeDay > 1 && nightsBeforeDay <= noGap) {
+                            _day.valid = false;
+                            isDisabled = true;
+                            isNoGapDay = true;
+                            isFirstEnabledDate = false;
+                        }
+                    }
+                }
+            }
+
             if (this.noCheckInDaysOfWeek.length > 0) {
                 if (this.noCheckInDaysOfWeek.indexOf(fecha.format(_day.time, "dddd")) > -1) {
                     isNoCheckIn = true;
@@ -1078,6 +1109,7 @@ export default class HotelDatepicker {
             isDayOfWeekDisabled ? `${this.className}__month-day--day-of-week-disabled` : "",
             isDayWithExtraText ? `${this.className}__month-day--with-extra` : "",
             isArrivalDay ? `${this.className}__month-day--arrival-day` : "",
+            isNoGapDay ? `${this.className}__month-day--no-gap` : "",
             isDepartureDay ? `${this.className}__month-day--departure-day` : "",
             isBooked ? `${this.className}__month-day--booked` : "",
         ];
@@ -1453,64 +1485,30 @@ export default class HotelDatepicker {
             this.end = false;
             // --- Änderung: minNights/minDays dynamisch setzen ---
             const season = this.getSeasonForDate(new Date(this.start));
+
             if (season) {
-                let minStay = parseInt(season.min_stay, 10) || 1;
 
-                let prevBooked = null;
                 let nextBooked = null;
+                let prevBooked = null;
 
-                if (this.bookedDays) {
-                    prevBooked = this.bookedDateTimes
+                if (this.notSelectableDays) {
+                    prevBooked = this.notSelectableDays
                         .filter(d => d < this.start)
                         .sort((a, b) => b - a)[0];
-                    nextBooked = this.bookedDateTimes
+                    nextBooked = this.disabledDatesTime
                             .filter(d => d > this.start)
                             .sort((a, b) => a - b)[0];
                 }
 
                 // if booked before the selected start date
                 if (prevBooked) {
+                    let minStay = parseInt(season.min_stay, 10) || 1;
                     const nightsBeforeSelectedDay = this.countDays(this.start, prevBooked) - 1;
-                    let noGapDays = parseInt(season.no_gap, 10);
-
-                    // dont allow gaps smaller than no_gap
-                    if (nightsBeforeSelectedDay > 1 && nightsBeforeSelectedDay < noGapDays + 1) {
-                        // and disable affected days
-                        // after a user hast clicked on a wrong date
-                        const timeOfFirstDisabledDay = prevBooked.getTime() + (86400000 * 2)
-                        const days = this.datepicker.getElementsByTagName("td");
-                        let notBookableDaysIndex = null;
-
-                        for (let i = 0; i < days.length; i++) {
-                            const time = parseInt(days[i].getAttribute("time"), 10);
-                            if (time === timeOfFirstDisabledDay) {
-                                notBookableDaysIndex = i;
-                                break;
-                            }
-                        }
-
-                        if (notBookableDaysIndex !== null) {
-                            while (days[notBookableDaysIndex] && noGapDays > 1) {
-                                if (days[notBookableDaysIndex].getAttribute('daytype') === "visibleMonth") {
-                                    this.addClass(days[notBookableDaysIndex], `${this.className}__month-day--disabled`);
-                                    this.removeClass(days[notBookableDaysIndex], `${this.className}__month-day--valid`);
-                                    days[notBookableDaysIndex].setAttribute("aria-disabled", "true");
-                                    noGapDays--;
-                                }
-                                notBookableDaysIndex++;
-                            }
-                        }
-
-                        this.start = false;
-                        this.end = false;
-                        this.topBarInfoText(this.replacei18n(this.lang('info-no-gap'), season.no_gap));
-                        return;
-                    }
 
                     if (nextBooked) {
                         const nightsAfterSelectedDay = this.countDays(this.start, nextBooked) - 2;
-                        if (nightsBeforeSelectedDay === 1 && nightsAfterSelectedDay < minStay && season.gap_close > 0) {
-                            this.minNights = parseInt(season.gap_close, 10);
+                        if (nightsBeforeSelectedDay === 1 && nightsAfterSelectedDay < minStay && nightsAfterSelectedDay >= season.gap_close) {
+                            this.minNights = nightsAfterSelectedDay;
                             this.minDays = this.minNights + 1;
                         } else {
                             this.minNights = minStay;
@@ -2239,12 +2237,12 @@ export default class HotelDatepicker {
         this.input.dispatchEvent(evt);
     }
 
-    parseDisabledDates() {
+    parseDates(dates) {
         // Sort disabled dates and store it in property
         const _tmp = [];
         this.setFechaI18n();
-        for (let i = 0; i < this.disabledDates.length; i++) {
-            _tmp[i] = fecha.parse(this.disabledDates[i], "YYYY-MM-DD");
+        for (let i = 0; i < dates.length; i++) {
+            _tmp[i] = fecha.parse(dates[i], "YYYY-MM-DD");
         }
 
         _tmp.sort((a, b) => {

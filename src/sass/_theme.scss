@@ -133,6 +133,10 @@
     background: #ffffff;
     color: $dates__invalid__color;
     cursor: not-allowed;
+
+    &.#{$selector}__month-day--no-gap:not(.#{$selector}__month-day--tmpinvalid) {
+        background: rgba($dates__valid__background__color, 0.5);
+    }
 }
 
 .#{$selector}__month-day--no-checkin.#{$selector}__month-day--no-checkout:not(.#{$selector}__month-day--booked),

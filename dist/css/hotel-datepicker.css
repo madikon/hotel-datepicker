@@ -178,6 +178,10 @@
   color: #c8c9d0;
   cursor: not-allowed;
 }
+.datepicker__month-day--invalid.datepicker__month-day--no-gap:not(.datepicker__month-day--tmpinvalid),
+.datepicker__month-day--disabled.datepicker__month-day--no-gap:not(.datepicker__month-day--tmpinvalid) {
+  background: rgba(220, 242, 221, 0.5);
+}
 
 .datepicker__month-day--no-checkin.datepicker__month-day--no-checkout:not(.datepicker__month-day--booked),
 .datepicker__month-day--day-of-week-disabled {
