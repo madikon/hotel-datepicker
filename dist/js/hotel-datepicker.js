@@ -117,7 +117,7 @@ var HotelDatepicker = (function (fecha) {
         this.onSelectRange = opts.onSelectRange === undefined ? false : opts.onSelectRange;
         this.extraDayText = opts.extraDayText === undefined ? false : opts.extraDayText;
         this.disabledDatesTime = [];
-        this.notSelectableDays = [];
+        this.notSelectableDayTimes = [];
         this.noCheckInDateTimes = [];
 
         // DOM input
@@ -284,7 +284,7 @@ var HotelDatepicker = (function (fecha) {
         if (this.noCheckInDates.length > 0) {
           this.noCheckInDateTimes = this.parseDates(this.noCheckInDates);
         }
-        this.notSelectableDays = this.disabledDatesTime.concat(this.noCheckInDateTimes);
+        this.notSelectableDayTimes = this.disabledDatesTime.concat(this.noCheckInDateTimes);
 
         // Parse disabled days
         if (this.disabledDaysOfWeek.length > 0) {
@@ -893,26 +893,6 @@ var HotelDatepicker = (function (fecha) {
               isNoCheckOut = true;
             }
           }
-          if (_day.valid && this.seasonDetails.length > 0) {
-            let season = this.getSeasonForDate(_day.date);
-            const prevBooked = this.notSelectableDays.filter(d => d < _day.time).sort((a, b) => b - a)[0];
-            if (prevBooked) {
-              const nightsBeforeDay = this.countDays(_day.date, prevBooked) - 1;
-              const prevBookedSeason = this.getSeasonForDate(prevBooked);
-              if (prevBookedSeason.begin !== season.begin) {
-                season = prevBookedSeason;
-              }
-              let noGap = parseInt(season.no_gap, 10);
-              if (noGap > 0) {
-                if (nightsBeforeDay > 1 && nightsBeforeDay <= noGap) {
-                  _day.valid = false;
-                  isDisabled = true;
-                  isNoGapDay = true;
-                  isFirstEnabledDate = false;
-                }
-              }
-            }
-          }
           if (this.noCheckInDaysOfWeek.length > 0) {
             if (this.noCheckInDaysOfWeek.indexOf(fecha__namespace.format(_day.time, "dddd")) > -1) {
               isNoCheckIn = true;
@@ -922,6 +902,33 @@ var HotelDatepicker = (function (fecha) {
           if (this.noCheckOutDaysOfWeek.length > 0) {
             if (this.noCheckOutDaysOfWeek.indexOf(fecha__namespace.format(_day.time, "dddd")) > -1) {
               isNoCheckOut = true;
+            }
+          }
+          if (_day.valid && _day.type === "visibleMonth" && this.seasonDetails.length > 0) {
+            let season = this.getSeasonForDate(_day.date);
+            const prevBooked = this.disabledDatesTime.filter(d => d < _day.time).sort((a, b) => b - a)[0];
+            if (prevBooked) {
+              const nightsBeforeDay = this.countDays(_day.date, prevBooked) - 1;
+              const prevBookedSeason = this.getSeasonForDate(prevBooked);
+              if (prevBookedSeason.begin !== season.begin) {
+                season = prevBookedSeason;
+              }
+              let noGap = parseInt(season.no_gap, 10);
+              let disable = this.noCheckInDates.length === 0;
+              let dayBeforeString = null;
+              if (this.noCheckInDates.length > 0) {
+                for (let i = 1; i < nightsBeforeDay; i++) {
+                  dayBeforeString = this.getDateString(this.substractDays(_day.date, i), "YYYY-MM-DD");
+                  if (this.noCheckInDates.indexOf(dayBeforeString) === -1) {
+                    disable = true;
+                  }
+                }
+              }
+              if (disable && noGap > 0 && nightsBeforeDay > 1 && nightsBeforeDay <= noGap) {
+                _day.valid = false;
+                isDisabled = true;
+                isNoGapDay = true;
+              }
             }
           }
         }
@@ -1230,13 +1237,12 @@ var HotelDatepicker = (function (fecha) {
         if (isSelectStart) {
           this.start = time;
           this.end = false;
-          // --- Änderung: minNights/minDays dynamisch setzen ---
           const season = this.getSeasonForDate(new Date(this.start));
           if (season) {
             let nextBooked = null;
             let prevBooked = null;
-            if (this.notSelectableDays) {
-              prevBooked = this.notSelectableDays.filter(d => d < this.start).sort((a, b) => b - a)[0];
+            if (this.disabledDatesTime) {
+              prevBooked = this.notSelectableDayTimes.filter(d => d < this.start).sort((a, b) => b - a)[0];
               nextBooked = this.disabledDatesTime.filter(d => d > this.start).sort((a, b) => a - b)[0];
             }
 
