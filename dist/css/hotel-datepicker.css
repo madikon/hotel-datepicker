@@ -183,15 +183,10 @@
   background: rgba(220, 242, 221, 0.5);
 }
 
-.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout:not(.datepicker__month-day--booked),
+.datepicker__month-day--no-checkin:not(.datepicker__month-day--booked),
 .datepicker__month-day--day-of-week-disabled {
   background: #fff;
   color: #c8c9d0;
-  cursor: not-allowed;
-}
-.datepicker__month-day--no-checkin.datepicker__month-day--no-checkout:not(.datepicker__month-day--booked)::before,
-.datepicker__month-day--day-of-week-disabled::before {
-  content: none;
 }
 
 .datepicker__month-day--min-nights-invalid {
@@ -202,6 +197,9 @@
 .datepicker__month-day--booked {
   color: red;
   background: #f9dcd8;
+}
+.datepicker__month-day--booked::before {
+  display: none;
 }
 
 .datepicker__month-day--selected {

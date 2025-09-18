@@ -1212,6 +1212,7 @@ class HotelDatepicker {
       if (this.hasClass(day, `${this.className}__month-day--no-checkout`) && time > this.start) {
         return;
       }
+      this.addClass(this.datepicker, `${this.className}__first-day-selected`);
     }
     this.addClass(day, `${this.className}__month-day--selected`);
     if (isSelectStart) {
@@ -1247,6 +1248,7 @@ class HotelDatepicker {
       }
     } else if (this.start) {
       this.end = time;
+      this.removeClass(this.datepicker, `${this.className}__first-day-selected`);
     }
 
     // Swap dates if they are inverted
@@ -1265,6 +1267,7 @@ class HotelDatepicker {
     if (this.start && !this.end) {
       // Add hovering class
       this.dayHovering(day);
+      this.addClass(this.datepicker, `${this.className}__first-day-selected`);
     }
 
     // Check day dates
