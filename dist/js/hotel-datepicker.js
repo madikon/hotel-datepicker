@@ -1242,6 +1242,7 @@ var HotelDatepicker = (function (fecha) {
           if (season) {
             let nextBooked = null;
             let prevBooked = null;
+            const minStay = parseInt(season.min_stay, 10) || 1;
             if (this.disabledDatesTime) {
               prevBooked = this.notSelectableDayTimes.filter(d => d < this.start).sort((a, b) => b - a)[0];
               nextBooked = this.disabledDatesTime.filter(d => d > this.start).sort((a, b) => a - b)[0];
@@ -1249,7 +1250,6 @@ var HotelDatepicker = (function (fecha) {
 
             // if booked before the selected start date
             if (prevBooked) {
-              let minStay = parseInt(season.min_stay, 10) || 1;
               const nightsBeforeSelectedDay = this.countDays(this.start, prevBooked) - 1;
               if (nextBooked) {
                 const nightsAfterSelectedDay = this.countDays(this.start, nextBooked) - 2;

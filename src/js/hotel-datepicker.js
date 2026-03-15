@@ -1499,6 +1499,7 @@ export default class HotelDatepicker {
             if (season) {
                 let nextBooked = null;
                 let prevBooked = null;
+                const minStay = parseInt(season.min_stay, 10) || 1;
 
                 if (this.disabledDatesTime) {
                     prevBooked = this.notSelectableDayTimes
@@ -1511,7 +1512,6 @@ export default class HotelDatepicker {
 
                 // if booked before the selected start date
                 if (prevBooked) {
-                    let minStay = parseInt(season.min_stay, 10) || 1;
                     const nightsBeforeSelectedDay = this.countDays(this.start, prevBooked) - 1;
 
                     if (nextBooked) {
